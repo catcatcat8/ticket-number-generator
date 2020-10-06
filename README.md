@@ -19,5 +19,9 @@ SHA256
 Пример запуска:
 > ./main --file /home/lebedev/CLionProjects/untitled/list.txt --numbilets 5 --parameter 40
 
+### Пример сборки, запуска, работы программы
+
+![](example.png "Example")
+
 ### Используемые несистемные библиотеки
 openssl (https://www.openssl.org/)
