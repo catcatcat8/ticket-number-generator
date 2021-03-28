@@ -25,11 +25,11 @@ string sha256(const string str)
 }
 
 /* Получение варианта учеником */
-int get_variant(string hash, int code_hash, int vars) {
+int get_variant(string hash, unsigned long int code_hash, int vars) {
     string hash_b = hash.substr(0, 8);  //берем первые 8 символов хеша
     unsigned long int our_hash = stol(hash_b, 0, 16);
-    our_hash = our_hash ^ code_hash;  //XOR с параметром распределения
-    int variant = (our_hash % vars) + 1;  //получение варианта в заданном диапазоне
+    unsigned long int result_hash = our_hash ^ code_hash;  //XOR с параметром распределения
+    int variant = (result_hash % vars) + 1;  //получение варианта в заданном диапазоне
     return variant;
 }
 
