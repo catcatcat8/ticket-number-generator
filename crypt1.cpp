@@ -8,7 +8,8 @@
 
 using namespace std;
 
-string sha256(const string str)  //SHA-256 функция
+/* Получение хеша SHA-256 */
+string sha256(const string str)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256_CTX sha256;
@@ -23,10 +24,11 @@ string sha256(const string str)  //SHA-256 функция
     return ss.str();
 }
 
-int get_variant(string hash, int code, int vars) {  //функция получения варианта
+/* Получение варианта учеником */
+int get_variant(string hash, int code_hash, int vars) {
     string hash_b = hash.substr(0, 8);  //берем первые 8 символов хеша
     unsigned long int our_hash = stol(hash_b, 0, 16);
-    our_hash = our_hash ^ code;  //XOR с параметром распределения
+    our_hash = our_hash ^ code_hash;  //XOR с параметром распределения
     int variant = (our_hash % vars) + 1;  //получение варианта в заданном диапазоне
     return variant;
 }
@@ -46,9 +48,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    string par_string = to_string(par);
+    string code_hash = sha256(par_string);
+    string code_hash_sub = code_hash.substr(0, 8);  // берем первые 8 символов хеша от параметра распределения
+    unsigned long int our_code_hash = stol(code_hash_sub, 0, 16);  // string -> int
     while (getline(ff, fio)) {
-        string hash = sha256(fio);
-        int cur_var = get_variant(hash, par, numbilets);
+        string fio_hash = sha256(fio);
+        int cur_var = get_variant(fio_hash, our_code_hash, numbilets);
         cout << fio << ": " << cur_var << endl;
     }
     ff.close();
